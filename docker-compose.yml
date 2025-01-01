@@ -1,37 +1,37 @@
 services:
   magic-platform:
     env_file:
-    - .env.dev
+      - .env.dev
     build:
       context: .
     command: /app/run_app.sh mage start $PROJECT_NAME
     ports:
-    - 6789:6789
+      - 6789:6789
     volumes:
-    - "${PWD}:/$MAGE_CODE_PATH"
-    - "~/.mage_data:/${MAGE_CODE_PATH}/mage_data"
-    - "~/.aws:/root/.aws"
-    - "~/.ssh:/root/.ssh:ro"
-    - "~/.gitconfig:/root/.gitconfig:ro"
+      - "${PWD}:/$MAGE_CODE_PATH"
+      - "~/.mage_data:/${MAGE_CODE_PATH}/mage_data"
+      - "~/.aws:/root/.aws"
+      - "~/.ssh:/root/.ssh:ro"
+      - "~/.gitconfig:/root/.gitconfig:ro"
     restart: on-failure:5
     networks:
-    - app-network
+      - app-network
     depends_on:
-    - magic-database
-    stdin_open: true
-    tty: true
+      - magic-database
+    stdin_open: true 
+    tty: true 
   magic-database:
     image: pgvector/pgvector:0.6.0-pg16
     env_file:
-    - .env.dev
+      - .env.dev
     ports:
-    - 5432:5432
+      - 5432:5432
     volumes:
-    - ~/.postgres/data:/var/lib/postgresql/data
-    - ./scripts/database:/docker-entrypoint-initdb.d
+      - ~/.postgres/data:/var/lib/postgresql/data
+      - ./scripts/database:/docker-entrypoint-initdb.d
     restart: always
     networks:
-    - app-network
+      - app-network
 networks:
   app-network:
     driver: bridge
